@@ -6,6 +6,6 @@ namespace Client.Application.Contracts.Persistence
     {
         Task<bool> CinExist(string cin, CancellationToken cancellationToken);
         Task<bool> ClientCinExist(Guid clientId, string cin, CancellationToken cancellationToken);
-        Task<Pagination<Domain.Client>> GetClientsAsync(ClientSpecParams specParams);
+        Task<Pagination<Domain.Client>> GetClientsAsync(SpecParams specParams,CancellationToken cancellationToken=default);
     }
 }

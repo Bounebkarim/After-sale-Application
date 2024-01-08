@@ -9,9 +9,9 @@ using MediatR;
 namespace Client.Application.Features.ClientFeatures.Queries.GetClients;
 public sealed class GetClientQuery : IRequest<Pagination<ClientDto>>
 {
-    public ClientSpecParams SpecParams { get; set; }
+    public SpecParams SpecParams { get; set; }
 
-    public GetClientQuery(ClientSpecParams specParams)
+    public GetClientQuery(SpecParams specParams)
     {
         SpecParams = specParams;
     }

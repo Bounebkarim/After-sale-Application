@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Client.Domain.Common;
 public class BaseEntity : IEquatable<BaseEntity>
 {
-    protected BaseEntity(Guid id)
+    public BaseEntity(Guid id)
     {
         Id = id;
     }
