@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,11 +34,17 @@ public class ClientRepository : GenericRepository<Domain.Client>, IClientReposit
     {
         var queryableClients = _dbContext.Clients.AsQueryable();
         var filterExpression = BuildFilterExpression(specParams);
-        var data = await queryableClients
+        queryableClients = queryableClients
                              .Where(filterExpression)
+                             .OrderBy(SortExpression(specParams.SortBy,specParams.SortOrder))
                              .Skip((specParams.PageIndex - 1) * specParams.PageSize)
-                             .Take(specParams.PageSize).ToListAsync(cancellationToken);
+                             .Take(specParams.PageSize);
+
+        var data = await queryableClients
+                             .ToListAsync(cancellationToken);
+
         var totalRecords = await _dbContext.Clients.CountAsync(cancellationToken);
+
         return new Pagination<Domain.Client>(specParams.PageIndex, specParams.PageSize, totalRecords, data);
     }
 
@@ -71,5 +78,24 @@ public class ClientRepository : GenericRepository<Domain.Client>, IClientReposit
                 return Expression.Constant(true);
         }
     }
-
+    private string SortExpression(string sortField, string sortOrder)
+    {
+        if (string.IsNullOrEmpty(sortField))
+            return "";
+        switch (sortField)
+        {
+            case "Name":
+                return string.Join(" ", new String[] { "Name", sortOrder });
+            case "LastName":
+                return string.Join(" ", new String[] { "LastName", sortOrder });
+            case "Cin":
+                return string.Join(" ", new String[] { "Cin", sortOrder });
+            case "PhoneNumber":
+                return string.Join(" ", new String[] { "PhoneNumber", sortOrder });
+            case "Address":
+                return string.Join(" ", new String[] { "Address", sortOrder });
+            default:
+                return "";
+        }
+    }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.Application.Contracts.Specs;
+namespace Reclamation.Application.Contracts.Specs;
 public class SpecParams
 {
     public SpecParams()
