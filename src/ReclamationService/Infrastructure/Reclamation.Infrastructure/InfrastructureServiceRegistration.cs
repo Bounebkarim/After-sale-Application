@@ -1,11 +1,10 @@
-﻿using Client.Application.Contracts.Logging;
-using Client.Infrastructure.CheckClient;
-using Client.Infrastructure.Logging;
-using MassTransit;
+﻿using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Reclamation.Application.Contracts.Logging;
+using Reclamation.Infrastructure.Logging;
 
-namespace Client.Infrastructure;
+namespace Reclamation.Infrastructure;
 
 public static class InfrastructureServiceRegistration
 {
@@ -16,10 +15,9 @@ public static class InfrastructureServiceRegistration
         {
             busConfigurator.AddHealthChecks();
             busConfigurator.SetKebabCaseEndpointNameFormatter();
-            busConfigurator.AddConsumer<CheckClientConsumer>();
+
             busConfigurator.UsingRabbitMq((context, configurator) =>
             {
-                
                 configurator.Host(new Uri(configuration["MessageBroker:Host"]!), h =>
                 {
                     h.Username(configuration["MessageBroker:UserName"]);
@@ -29,7 +27,7 @@ public static class InfrastructureServiceRegistration
                 configurator.ConfigureEndpoints(context);
             });
         });
+
         return services;
     }
-
 }
