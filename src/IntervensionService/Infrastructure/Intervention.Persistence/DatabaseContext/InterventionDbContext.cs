@@ -6,12 +6,8 @@ namespace Intervention.Persistence.DatabaseContext;
 
 public class InterventionDbContext : DbContext
 {
-    public InterventionDbContext()
-    {
-
-    }
     public InterventionDbContext(DbContextOptions<InterventionDbContext> options) : base(options) { }
-    public DbSet<Domain.Intervention> Reclamations { get; set; }
+    public DbSet<Domain.Intervention> Interventions { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

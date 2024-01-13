@@ -1,5 +1,6 @@
 ﻿using Intervention.Application.Contracts.Persistence;
 using Intervention.Persistence.DatabaseContext;
+using Intervention.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,7 @@ public static class PersistenceServiceRegistration
             config.UseSqlServer(configuration.GetConnectionString("InterventionDbConnection"),
                 options => options.MigrationsAssembly(typeof(InterventionDbContext).Assembly.FullName));
         });
-        services.AddScoped(typeof(IGenericRepository<>), typeof(IGenericRepository<>));
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         return services;
     }
 }

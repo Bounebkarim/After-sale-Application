@@ -4,6 +4,7 @@ using Intervention.Application;
 using Intervention.Application.Contracts.Specs;
 using Intervention.Infrastructure;
 using Intervention.Persistence;
+using Intervention.Persistence.MigrationManager;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,7 +39,7 @@ builder.Services.AddApiVersioning(config =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+var app = builder.Build().MigrateDatabase();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

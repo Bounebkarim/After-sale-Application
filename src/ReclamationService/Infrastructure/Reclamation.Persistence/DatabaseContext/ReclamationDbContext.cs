@@ -6,16 +6,13 @@ namespace Reclamation.Persistence.DatabaseContext;
 
 public class ReclamationDbContext : DbContext
 {
-    public ReclamationDbContext()
-    {
-
-    }
+    public ReclamationDbContext() { }
     public ReclamationDbContext(DbContextOptions<ReclamationDbContext> options) : base(options) { }
-    public DbSet<Domain.Reclamation> Reclamations { get; set; }
+    public DbSet<Domain.Reclamation>? Reclamations { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ReclamationDbContext).Assembly);
+    //    base.OnModelCreating(modelBuilder);
+    //    modelBuilder.ApplyConfigurationsFromAssembly(typeof(ReclamationDbContext).Assembly);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
