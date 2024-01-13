@@ -1,9 +1,9 @@
-﻿using Client.Persistence.DatabaseContext;
+﻿using Reclamation.Persistence.DatabaseContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Client.Persistence.MigrationManager;
+namespace Reclamation.Persistence.MigrationManager;
 
 public static class MigrationHelper
 {
@@ -11,7 +11,7 @@ public static class MigrationHelper
     {
         using (var scope = webApp.Services.CreateScope())
         {
-            using (var appContext = scope.ServiceProvider.GetRequiredService<ClientDbContext>())
+            using (var appContext = scope.ServiceProvider.GetRequiredService<ReclamationDbContext>())
             {
                 try
                 {

@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\ReclamationFeature\Commands\UpdateReclamation\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\Contracts\Contracts.csproj" />
     <ProjectReference Include="..\Reclamation.Core\Reclamation.Domain.csproj" />
   </ItemGroup>

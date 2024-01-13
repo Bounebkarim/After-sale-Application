@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Contracts;
 using FluentValidation;
 using MassTransit;
@@ -22,12 +17,12 @@ public class CreateReclamationCommandValidator : AbstractValidator<CreateReclama
         RuleFor(r => r.Severity).NotNull().NotEmpty().WithMessage("Severity is required");
         RuleFor(r => r.Title).NotNull().NotEmpty().WithMessage("Title is required");
         RuleFor(r => r.problemType).NotNull().NotEmpty().WithMessage("problemType is required");
-        RuleFor(r => r.ClientId).MustAsync(ClientExist).WithMessage("problemType is required");
+        RuleFor(r => r.ClientId).MustAsync(ClientExist).WithMessage("Client does not exist");
     }
 
     private async Task<bool> ClientExist(Guid clientId, CancellationToken cancellationToken)
     {
-        var response = await _client.GetResponse<CheckClientExistenceResponse>(new CheckClientExistenceRequest { ClientId = clientId },cancellationToken);
+        var response = await _client.GetResponse<CheckClientExistenceResponse>(new CheckClientExistenceRequest { ClientId = clientId }, cancellationToken);
         return response.Message.Exists;
     }
 }

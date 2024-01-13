@@ -1,13 +1,9 @@
-﻿using Client.Domain.Common;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Reclamation.Application.Contracts.Persistence.Specifications;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Reclamation.Domain.Common;
 
 namespace Reclamation.Persistence.Repositories.Evaluators;
+
 public class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
 {
     public static IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery, ISpecification<TEntity> specification)
@@ -15,40 +11,28 @@ public class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
         var query = inputQuery;
 
         // modify the IQueryable using the specification's criteria expression
-        if (specification.Criteria != null)
-        {
-            query = query.Where(specification.Criteria);
-        }
+        if (specification.Criteria != null) query = query.Where(specification.Criteria);
 
         // Includes all expression-based includes
         query = specification.Includes.Aggregate(query,
-                                (current, include) => current.Include(include));
+            (current, include) => current.Include(include));
 
         // Include any string-based include statements
         query = specification.IncludeStrings.Aggregate(query,
-                                (current, include) => current.Include(include));
+            (current, include) => current.Include(include));
 
         // Apply ordering if expressions are set
         if (specification.OrderBy != null)
-        {
             query = query.OrderBy(specification.OrderBy);
-        }
         else if (specification.OrderByDescending != null)
-        {
             query = query.OrderByDescending(specification.OrderByDescending);
-        }
 
-        if (specification.GroupBy != null)
-        {
-            query = query.GroupBy(specification.GroupBy).SelectMany(x => x);
-        }
+        if (specification.GroupBy != null) query = query.GroupBy(specification.GroupBy).SelectMany(x => x);
 
         // Apply paging if enabled
         if (specification.IsPagingEnabled)
-        {
             query = query.Skip(specification.Skip)
-                         .Take(specification.Take);
-        }
+                .Take(specification.Take);
         return query;
     }
 }

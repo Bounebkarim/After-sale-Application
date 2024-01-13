@@ -27,24 +27,14 @@ public class CreateReclamationCommandHandler : IRequestHandler<CreateReclamation
     public async Task Handle(CreateReclamationCommand request, CancellationToken cancellationToken)
     {
         var validator = new CreateReclamationCommandValidator(_client);
-        var ValidationResult = await validator.ValidateAsync(request);
-        if (ValidationResult.Errors.Any())
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (validationResult.Errors.Any())
         {
-            _logger.LogWarning("Validation failed on creating reclamtion", ValidationResult);
-            throw new BadRequestException("Validation failed on creating reclamtion");
+            _logger.LogWarning("Validation failed on creating Intervention", validationResult);
+            throw new BadRequestException("Validation failed on creating Intervention");
         }
 
-        var reclamation = staticMapper.Mapper.Map<Domain.Reclamation>(request);
-        await _genericRepository.CreateAsync(reclamation);
-        await _publishEndpoint.Publish(new ReclamationCreatedEvent()
-        {
-            ClientLastName = reclamation.ClientLastName,
-            EtatReclamation = (int)reclamation.EtatReclamation,
-            ClientName = reclamation.ClientId,
-            Severity = (int)reclamation.Severity,
-            Title = reclamation.Title,
-            problemType = (int)reclamation.problemType,
-            Id = reclamation.Id
-        });
+        var intervention = staticMapper.Mapper.Map<Domain.Reclamation>(request);
+        await _genericRepository.CreateAsync(intervention, cancellationToken);
     }
 }

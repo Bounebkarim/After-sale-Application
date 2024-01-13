@@ -17,7 +17,7 @@ builder.Host.UseSerilog((context, loggerConfig) =>
 });
 builder.Services.AddControllers();
 builder.Services.AddPersistenceServices(builder.Configuration);
-builder.Services.AddInfrastructureServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<IUriService>(o =>

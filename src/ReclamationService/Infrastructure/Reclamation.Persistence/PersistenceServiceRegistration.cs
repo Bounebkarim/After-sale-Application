@@ -1,19 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Reclamation.Application.Contracts.Persistence;
 using Reclamation.Persistence.DatabaseContext;
 
 namespace Reclamation.Persistence;
 
 public static class PersistenceServiceRegistration
 {
-    public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddPersistenceServices(this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddDbContext<ReclamationDbContext>(config =>
         {
-            config.UseSqlServer(configuration.GetConnectionString("ReclamationConnectionString"), 
-                                options => options.MigrationsAssembly(typeof(ReclamationDbContext).Assembly.FullName));
+            config.UseSqlServer(configuration.GetConnectionString("ReclamationDbConnection"),
+                options => options.MigrationsAssembly(typeof(ReclamationDbContext).Assembly.FullName));
         });
+        services.AddScoped(typeof(IGenericRepository<>), typeof(IGenericRepository<>));
         return services;
     }
 }

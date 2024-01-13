@@ -16,7 +16,8 @@ public class GetReclamationDetailQueryHandler : IRequestHandler<GetReclamationDe
     private readonly IGenericRepository<Domain.Reclamation> _genericRepository;
     private readonly IAppLogger<GetReclamationDetailQueryHandler> _logger;
 
-    public GetReclamationDetailQueryHandler(IGenericRepository<Domain.Reclamation> genericRepository, IAppLogger<GetReclamationDetailQueryHandler> logger)
+    public GetReclamationDetailQueryHandler(IGenericRepository<Domain.Reclamation> genericRepository, 
+                                            IAppLogger<GetReclamationDetailQueryHandler> logger)
     {
         this._genericRepository = genericRepository;
         this._logger = logger;
