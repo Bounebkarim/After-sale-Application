@@ -19,7 +19,6 @@ public static class InfrastructureServiceRegistration
             busConfigurator.AddConsumer<CheckClientConsumer>();
             busConfigurator.UsingRabbitMq((context, configurator) =>
             {
-                
                 configurator.Host(new Uri(configuration["MessageBroker:Host"]!), h =>
                 {
                     h.Username(configuration["MessageBroker:UserName"]);

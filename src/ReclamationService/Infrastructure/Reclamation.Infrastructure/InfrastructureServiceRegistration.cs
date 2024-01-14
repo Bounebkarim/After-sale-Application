@@ -22,6 +22,7 @@ public static class InfrastructureServiceRegistration
                 {
                     h.Username(configuration["MessageBroker:UserName"]);
                     h.Password(configuration["MessageBroker:Password"]);
+                    
                 });
 
                 configurator.ConfigureEndpoints(context);

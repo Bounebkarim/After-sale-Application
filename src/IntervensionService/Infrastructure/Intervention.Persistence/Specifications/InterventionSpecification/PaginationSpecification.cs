@@ -1,7 +1,7 @@
-﻿using System.Linq.Expressions;
-using System.Reflection;
-using Intervention.Application.Contracts.Persistence.Specifications;
+﻿using Intervention.Application.Contracts.Persistence.Specifications;
 using Intervention.Application.Contracts.Specs;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Intervention.Persistence.Specifications.InterventionSpecification;
 
@@ -12,13 +12,21 @@ public class PaginationSpecification<T> : ISpecification<T>
         Criteria = BuildExpression(specParams.Search!);
         IsPagingEnabled = true;
         Take = specParams.PageSize;
-        Skip = specParams.PageSize * specParams.PageIndex;
+        Skip = specParams.PageSize * (specParams.PageIndex - 1);
         if (specParams.SortOrder == "desc")
             OrderByDescending = GetOrderByExpression(specParams.SortBy, specParams.SortOrder);
+        else
+        {
+            OrderBy = GetOrderByExpression(specParams.SortBy, specParams.SortOrder);
+        }
     }
 
     public Expression<Func<T, bool>> BuildExpression(List<SearchParam> searchParams)
     {
+        if (searchParams == null || searchParams.Count == 0)
+        {
+            return null;
+        }
         var parameter = Expression.Parameter(typeof(T), "x");
         Expression body = Expression.Constant(true);
 

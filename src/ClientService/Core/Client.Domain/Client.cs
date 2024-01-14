@@ -5,14 +5,17 @@ namespace Client.Domain;
 
 public class Client : BaseEntity
 {
-    public Client(Guid id,string name,string lastName,string cin ,string address,string phoneNumber) : base(id)
+    public Client(Guid id) : base(id) { }
+
+    public Client(Guid newGuid, string name, string lastname, string cin, string adress, string phoneNumber) : base(newGuid)
     {
-        this.PhoneNumber = phoneNumber;
-        this.Name = name;
-        this.LastName = lastName;
-        this.Address = address;
-        this.Cin = cin;
+        Name=name;
+        LastName=lastname;
+        Cin=cin;
+        Address = adress;
+        PhoneNumber=phoneNumber;
     }
+
     public string Name { get; set; }
     public string LastName { get; set; }
     public string Cin { get; set; }    

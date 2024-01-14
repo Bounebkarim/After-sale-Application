@@ -1,4 +1,5 @@
 using AutoMapper;
+using Intervention.Application.Contracts.Specs;
 using Intervention.Application.Features.InterventionFeature.Commands.CreateIntervention;
 using Intervention.Application.Features.InterventionFeature.Commands.UpdateIntervention;
 using Intervention.Application.Features.InterventionFeature.Queries.GetInterventionDetails;
@@ -10,9 +11,12 @@ public class InterventionProfile : Profile
 {
     public InterventionProfile()
     {
-        CreateMap<CreateInterventionCommand, Domain.Intervention>().ReverseMap();
-        CreateMap<UpdateInterventionCommand, Domain.Intervention>().ReverseMap();
+        CreateMap(typeof(CreateInterventionCommand), typeof(Domain.Intervention))
+                            .ConstructUsing((src,context)=>new Domain.Intervention(Guid.NewGuid())).ReverseMap();
+        CreateMap<UpdateInterventionCommand, Domain.Intervention>()
+                            .ConstructUsing((src, context) => new Domain.Intervention(src.Id)).ReverseMap();
         CreateMap<Domain.Intervention, InterventionDto>();
         CreateMap<Domain.Intervention, InterventionDetailsDto>();
+        CreateMap<Pagination<Domain.Intervention>, Pagination<InterventionDto>>().ReverseMap();
     }
 }

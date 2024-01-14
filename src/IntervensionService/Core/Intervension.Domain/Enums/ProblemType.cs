@@ -1,10 +1,10 @@
 ﻿namespace Intervention.Domain.Enums;
 public enum ProblemType
 {
-    TechnicalProblem = 0,
-    HardWareProblem = 1,
-    DeliveryProblem = 2,
-    PaymentProblem = 3,
-    Other = 4
+    TechnicalProblem = 1,
+    HardWareProblem = 2,
+    DeliveryProblem = 3,
+    PaymentProblem = 4,
+    Other = 5
 
 }

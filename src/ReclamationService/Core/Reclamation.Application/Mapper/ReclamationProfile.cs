@@ -11,9 +11,12 @@ public class ReclamationProfile : Profile
 {
     public ReclamationProfile()
     {
-        CreateMap<CreateReclamationCommand, Domain.Reclamation>().ReverseMap();
-        CreateMap<UpdateReclamationCommand, Domain.Reclamation>().ReverseMap();
+        CreateMap(typeof(CreateReclamationCommand), typeof(Domain.Reclamation))
+                                .ConstructUsing((src, context) => new Domain.Reclamation(Guid.NewGuid()));
+        CreateMap<UpdateReclamationCommand, Domain.Reclamation>()
+                                .ConstructUsing((src, context) => new Domain.Reclamation(src.Id));
         CreateMap<Domain.Reclamation, ReclamationDto>();
         CreateMap<Domain.Reclamation, ReclamationDetailsDto>();
+        CreateMap<Pagination<Domain.Reclamation>, Pagination<ReclamationDto>>().ReverseMap();
     }
 }

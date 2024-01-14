@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Reclamation.Domain.Enums;
 public enum Severity
 {
-    Normal = 0,
-    High = 1,
-    Critical = 2
+    Normal = 1,
+    High = 2,
+    Critical = 3
 }

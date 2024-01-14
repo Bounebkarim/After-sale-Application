@@ -14,11 +14,11 @@ public class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
         if (specification.Criteria != null) query = query.Where(specification.Criteria);
 
         // Includes all expression-based includes
-        query = specification.Includes.Aggregate(query,
+        if (specification.Includes != null) query = specification.Includes.Aggregate(query,
             (current, include) => current.Include(include));
 
         // Include any string-based include statements
-        query = specification.IncludeStrings.Aggregate(query,
+        if (specification.IncludeStrings != null) query = specification.IncludeStrings.Aggregate(query,
             (current, include) => current.Include(include));
 
         // Apply ordering if expressions are set

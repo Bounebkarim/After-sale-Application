@@ -4,7 +4,7 @@ using MassTransit;
 using Intervention.Application.Contracts.Persistence;
 
 namespace Intervention.Infrastructure.InterventionConsumers;
-public class UpdateInterventionConsumer : IConsumer<ReclamationCreatedEvent>
+public class UpdateInterventionConsumer : IConsumer<ReclamationModifiedEvent>
 {
     private readonly IGenericRepository<Domain.Intervention> _repository;
 
@@ -12,7 +12,7 @@ public class UpdateInterventionConsumer : IConsumer<ReclamationCreatedEvent>
     {
         _repository = repository;
     }
-    public async Task Consume(ConsumeContext<ReclamationCreatedEvent> context)
+    public async Task Consume(ConsumeContext<ReclamationModifiedEvent> context)
     {
         var specification = new GetByReclamationSpecification(context.Message.Id);
         var intervention = (await _repository.FindWithSpecificationPattern(specification)).FirstOrDefault();
@@ -26,7 +26,7 @@ public class UpdateInterventionConsumer : IConsumer<ReclamationCreatedEvent>
         intervention.InterventionStatus = (InterventionStatus)context.Message.EtatReclamation;
         intervention.ProblemType = (ProblemType)context.Message.problemType;
         intervention.Severity = (Severity)context.Message.Severity;
-
+        intervention.Description += $" {intervention.Description}";
         await _repository.UpdateAsync(intervention);
     }
 }

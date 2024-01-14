@@ -36,5 +36,17 @@ public class CreateReclamationCommandHandler : IRequestHandler<CreateReclamation
 
         var intervention = staticMapper.Mapper.Map<Domain.Reclamation>(request);
         await _genericRepository.CreateAsync(intervention, cancellationToken);
+        await _publishEndpoint.Publish(new ReclamationCreatedEvent()
+        {
+            ClientLastName = intervention.ClientLastName,
+            EtatReclamation = (int)intervention.EtatReclamation,
+            ClientName = intervention.ClientName,
+            Severity = (int)intervention.Severity,
+            Title = intervention.Title,
+            problemType = (int)intervention.problemType,
+            Description = intervention.Description,
+            Id = intervention.Id,
+            ClientId = intervention.ClientId
+        }, cancellationToken);
     }
 }

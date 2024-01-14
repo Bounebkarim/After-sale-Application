@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@ public static class staticMapper
         var config = new MapperConfiguration((cfg) =>
         {
             cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
+            cfg.AddGlobalIgnore("Id");
             cfg.AddMaps(Assembly.GetExecutingAssembly());
         });
         var mapper = config.CreateMapper();

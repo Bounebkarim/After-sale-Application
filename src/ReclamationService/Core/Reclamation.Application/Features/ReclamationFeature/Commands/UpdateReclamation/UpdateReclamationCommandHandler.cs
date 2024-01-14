@@ -44,13 +44,14 @@ public class UpdateReclamationCommandHandler : IRequestHandler<UpdateReclamation
         await _genericRepository.UpdateAsync(reclamation, cancellationToken);
         await _endpoint.Publish(new ReclamationModifiedEvent()
         {
-            ClientLastName = reclamation.ClientLastName,
+            ClientLastName =  reclamation.ClientLastName,
             EtatReclamation = (int)reclamation.EtatReclamation,
-            ClientName = reclamation.ClientId,
+            ClientName = reclamation.ClientName,
             Severity = (int)reclamation.Severity,
             Title = reclamation.Title,
             problemType = (int)reclamation.problemType,
-            Id = reclamation.Id
+            Id = reclamation.Id,
+            ClientId = reclamation.ClientId
         }, cancellationToken);
     }
 }

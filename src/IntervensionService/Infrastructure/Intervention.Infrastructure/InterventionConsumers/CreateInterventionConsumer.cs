@@ -21,8 +21,10 @@ public class CreateInterventionConsumer : IConsumer<ReclamationCreatedEvent>
             Title = context.Message.Title,
             InterventionStatus = (InterventionStatus)context.Message.EtatReclamation,
             ProblemType = (ProblemType)context.Message.problemType,
-            ReclamationId = context.Message.Id,
-            Severity = (Severity)context.Message.Severity
+            ReclamationId = Guid.Parse(context.Message.Id.ToString()),
+            Severity = (Severity)context.Message.Severity,
+            Description = context.Message.Description,
+            ClientId = Guid.Parse(context.Message.ClientId.ToString())
         };
         await _repository.CreateAsync(intervention);
     }

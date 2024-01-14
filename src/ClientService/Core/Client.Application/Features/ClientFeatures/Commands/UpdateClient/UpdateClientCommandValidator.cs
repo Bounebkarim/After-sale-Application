@@ -17,7 +17,7 @@ public class UpdateClientCommandValidator : AbstractValidator<UpdateClientComman
             .NotEmpty()
             .NotNull().WithMessage("LastName is required")
             .MaximumLength(50).WithMessage("LastName must be shorter than 50 character");
-        RuleFor(o => o.Adress)
+        RuleFor(o => o.Address)
             .NotEmpty()
             .NotNull().WithMessage("Adress is required")
             .MaximumLength(100).WithMessage("Adress must be shorter than 100 character");

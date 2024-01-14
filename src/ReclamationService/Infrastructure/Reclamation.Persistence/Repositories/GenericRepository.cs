@@ -41,12 +41,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         ISpecification<T> specification = null)
     {
         return await SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), specification)
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 
     public async Task<IReadOnlyList<T>> GetAsync(CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Set<T>().ToListAsync(cancellationToken);
+        return await _dbContext.Set<T>().AsNoTracking().ToListAsync(cancellationToken);
     }
 
     public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -61,6 +62,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         var query = _dbContext.Set<T>().AsQueryable();
         var totalRecords = await query.CountAsync(cancellationToken);
         var data = await SpecificationEvaluator<T>.GetQuery(query, paginationSpecification)
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
         var pagination = new Pagination<T>(specParams.PageIndex, specParams.PageSize, totalRecords, data);
         return pagination;

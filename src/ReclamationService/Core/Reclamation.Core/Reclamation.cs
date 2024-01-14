@@ -11,11 +11,11 @@ public class Reclamation : BaseEntity
 {
     public Reclamation(Guid Id) : base(Id) { }
 
-    public string? Title { get; set; }
-    public string? Description { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
     public Guid ClientId { get; set; }
-    public Guid ClientName { get; set; }
-    public Guid ClientLastName { get; set; }
+    public string ClientName { get; set; }
+    public string ClientLastName { get; set; }
     public ReclamationStatus EtatReclamation { get; set; } = default;
     public Severity Severity { get; set; } = default;
     public ProblemType problemType { get; set; } = default;

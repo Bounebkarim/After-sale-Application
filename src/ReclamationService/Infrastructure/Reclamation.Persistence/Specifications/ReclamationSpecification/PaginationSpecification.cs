@@ -27,6 +27,7 @@ public class PaginationSpecification<T> : ISpecification<T>
 
     public Expression<Func<T, bool>> BuildExpression(List<SearchParam> searchParams)
     {
+        if (searchParams == null || searchParams.Count == 0) return null;
         var parameter = Expression.Parameter(typeof(T), "x");
         Expression body = Expression.Constant(true);
 

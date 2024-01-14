@@ -1,4 +1,7 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Asp.Versioning;
+using Client.API.MiddleWare;
 using Client.Application;
 using Client.Application.Contracts.Specs;
 using Client.Application.Services;
@@ -15,7 +18,12 @@ builder.Host.UseSerilog((context, loggerConfig) =>
     loggerConfig.WriteTo.Console()
         .ReadFrom.Configuration(context.Configuration);
 });
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(config =>
+{
+    config.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    config.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    config.JsonSerializerOptions.AllowTrailingCommas = true;
+}); ;
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
@@ -34,19 +42,26 @@ builder.Services.AddApiVersioning(config =>
     config.AssumeDefaultVersionWhenUnspecified = true;
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("all", builder => builder.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod());
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
 var app = builder.Build().MigrateDatabase();
-
+app.UseMiddleware<ExceptionMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseSerilogRequestLogging();
+app.UseCors("all");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

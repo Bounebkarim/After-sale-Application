@@ -11,12 +11,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Intervention.Api.Controllers.V1;
 
-public class ClientController : ApiController
+public class InterventionController : ApiController
 {
     private readonly IMediator _mediator;
     private readonly IUriService _uriService;
 
-    public ClientController(IMediator mediator, IUriService uriService)
+    public InterventionController(IMediator mediator, IUriService uriService)
     {
         _mediator = mediator;
         _uriService = uriService;
