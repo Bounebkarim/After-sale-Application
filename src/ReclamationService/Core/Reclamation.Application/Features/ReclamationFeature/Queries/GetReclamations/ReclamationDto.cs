@@ -10,8 +10,8 @@ public record ReclamationDto
 {
     public Guid Id { get; set; }
     public string Title { get; set; }
-    public Guid ClientName { get; set; }
-    public Guid ClientLastName { get; set; }
+    public string ClientName { get; set; }
+    public string ClientLastName { get; set; }
     public ReclamationStatus EtatReclamation { get; set; } = default;
     public Severity Severity { get; set; } = default;
     public ProblemType problemType { get; set; } = default;

@@ -7,9 +7,9 @@ public class InterventionDetailsDto
     public Guid ReclamationId { get; set; }
     public string Title { get; set; }
     public string? Description { get; set; }
-    public Guid ClientName { get; set; }
-    public Guid ClientLastName { get; set; }
-    public InterventionStatus EtatReclamation { get; set; } = default;
+    public string ClientName { get; set; }
+    public string ClientLastName { get; set; }
+    public InterventionStatus InterventionStatus { get; set; } = default;
     public Severity Severity { get; set; } = default;
     public ProblemType ProblemType { get; set; } = default;
 }

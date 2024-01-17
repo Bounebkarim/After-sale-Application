@@ -1,7 +1,5 @@
 ﻿namespace Intervention.Domain.Enums;
 public enum InterventionStatus
 {
-    Done = 3,
-    InProgress = 2,
-    Waiting = 1
+    Waiting = 1, InProgress = 2, Done = 3,
 }

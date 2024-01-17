@@ -11,18 +11,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Client.Persistence.Repositories;
+
 public class ClientRepository : GenericRepository<Domain.Client>, IClientRepository
 {
     private readonly ClientDbContext _dbContext;
 
     public ClientRepository(ClientDbContext dbContext) : base(dbContext)
     {
-        this._dbContext = dbContext;
+        _dbContext = dbContext;
     }
 
     public async Task<bool> CinExist(string cin, CancellationToken cancellationToken)
     {
-        return ! await _dbContext.Clients.AnyAsync(o => o.Cin == cin, cancellationToken);
+        return !await _dbContext.Clients.AnyAsync(o => o.Cin == cin, cancellationToken);
     }
 
     public async Task<bool> ClientCinExist(Guid clientId, string cin, CancellationToken cancellationToken)
@@ -30,18 +31,19 @@ public class ClientRepository : GenericRepository<Domain.Client>, IClientReposit
         return await _dbContext.Clients.AnyAsync(o => o.Cin == cin && o.Id == clientId, cancellationToken);
     }
 
-    public async Task<Pagination<Domain.Client>> GetClientsAsync(SpecParams specParams, CancellationToken cancellationToken)
+    public async Task<Pagination<Domain.Client>> GetClientsAsync(SpecParams specParams,
+        CancellationToken cancellationToken)
     {
         var queryableClients = _dbContext.Clients.AsQueryable();
         var filterExpression = BuildFilterExpression(specParams);
         queryableClients = queryableClients
-                             .Where(filterExpression)
-                             .OrderBy(SortExpression(specParams.SortBy,specParams.SortOrder))
-                             .Skip((specParams.PageIndex - 1) * specParams.PageSize)
-                             .Take(specParams.PageSize);
+            .Where(filterExpression)
+            .OrderBy(SortExpression(specParams.SortBy, specParams.SortOrder))
+            .Skip((specParams.PageIndex - 1) * specParams.PageSize)
+            .Take(specParams.PageSize);
 
         var data = await queryableClients
-                             .ToListAsync(cancellationToken);
+            .ToListAsync(cancellationToken);
 
         var totalRecords = await _dbContext.Clients.CountAsync(cancellationToken);
 
@@ -62,40 +64,34 @@ public class ClientRepository : GenericRepository<Domain.Client>, IClientReposit
 
     private Expression BuildFilterExpressionForField(ParameterExpression parameter, string field, string searchTerm)
     {
-        switch (field)
+        return field.ToLower() switch
         {
-            case "Name":
-                return Expression.Call(Expression.Property(parameter, "Name"), "Contains", null, Expression.Constant(searchTerm));
-            case "LastName":
-                return Expression.Call(Expression.Property(parameter, "LastName"), "Contains", null, Expression.Constant(searchTerm));
-            case "Cin":
-                return Expression.Call(Expression.Property(parameter, "Cin"), "Contains", null, Expression.Constant(searchTerm));
-            case "PhoneNumber":
-                return Expression.Call(Expression.Property(parameter, "PhoneNumber"), "Contains", null, Expression.Constant(searchTerm));
-            case "Address":
-                return Expression.Call(Expression.Property(parameter, "Address"), "Contains", null, Expression.Constant(searchTerm));
-            default:
-                return Expression.Constant(true);
-        }
+            "name" => Expression.Call(Expression.Property(parameter, "Name"), "Contains", null,
+                Expression.Constant(searchTerm)),
+            "lastname" => Expression.Call(Expression.Property(parameter, "LastName"), "Contains", null,
+                Expression.Constant(searchTerm)),
+            "cin" => Expression.Call(Expression.Property(parameter, "Cin"), "Contains", null,
+                Expression.Constant(searchTerm)),
+            "phonenumber" => Expression.Call(Expression.Property(parameter, "PhoneNumber"), "Contains", null,
+                Expression.Constant(searchTerm)),
+            "address" => Expression.Call(Expression.Property(parameter, "Address"), "Contains", null,
+                Expression.Constant(searchTerm)),
+            _ => Expression.Constant(true)
+        };
     }
+
     private string SortExpression(string sortField, string sortOrder)
     {
         if (string.IsNullOrEmpty(sortField))
             return "Name";
-        switch (sortField)
+        return sortField.ToLower() switch
         {
-            case "Name":
-                return string.Join(" ", new String[] { "Name", sortOrder });
-            case "LastName":
-                return string.Join(" ", new String[] { "LastName", sortOrder });
-            case "Cin":
-                return string.Join(" ", new String[] { "Cin", sortOrder });
-            case "PhoneNumber":
-                return string.Join(" ", new String[] { "PhoneNumber", sortOrder });
-            case "Address":
-                return string.Join(" ", new String[] { "Address", sortOrder });
-            default:
-                return "";
-        }
+            "name" => string.Join(" ", new string[] { "Name", sortOrder }),
+            "lastname" => string.Join(" ", new string[] { "LastName", sortOrder }),
+            "cin" => string.Join(" ", new string[] { "Cin", sortOrder }),
+            "phonenumber" => string.Join(" ", new string[] { "PhoneNumber", sortOrder }),
+            "address" => string.Join(" ", new string[] { "Address", sortOrder }),
+            _ => ""
+        };
     }
 }

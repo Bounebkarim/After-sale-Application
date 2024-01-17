@@ -20,7 +20,7 @@ public class PaginationSpecification<T> : ISpecification<T>
         Criteria = BuildExpression(specParams.Search!);
         IsPagingEnabled = true;
         Take = specParams.PageSize;
-        Skip = specParams.PageSize * specParams.PageIndex;
+        Skip = specParams.PageSize * (specParams.PageIndex -1);
         if (specParams.SortOrder == "desc")
             OrderByDescending = GetOrderByDescendingExpression(specParams.SortBy, specParams.SortOrder);
     }
