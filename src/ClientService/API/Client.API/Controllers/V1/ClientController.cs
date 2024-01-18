@@ -6,6 +6,7 @@ using Client.Application.Features.ClientFeatures.Commands.UpdateClient;
 using Client.Application.Features.ClientFeatures.Queries.GetClientDetails;
 using Client.Application.Features.ClientFeatures.Queries.GetClients;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.API.Controllers.V1;
@@ -22,17 +23,19 @@ public class ClientController : ApiController
     }
 
     [HttpGet]
+    [Authorize(Policy = "CanReadClients")]
     public async Task<Pagination<ClientDto>> Get([FromQuery] SpecParams specParams)
     {
         var data = await _mediator.Send(new GetClientQuery(specParams));
-        string? route = Request.Path.Value;
+        var route = Request.Path.Value;
         return PaginationHelper.CreatePagedReponse<ClientDto>(data, _uriService, route);
     }
 
     [HttpGet("{id}")]
+    [Authorize(Policy = "CanReadClients")]
     public async Task<ActionResult<ClientDetailDto>> Get(Guid id)
     {
-        ClientDetailDto client = await _mediator.Send(new GetClientDetailQuery(id));
+        var client = await _mediator.Send(new GetClientDetailQuery(id));
         return Ok(client);
     }
 
@@ -40,6 +43,7 @@ public class ClientController : ApiController
     [ProducesResponseType(201)]
     [ProducesResponseType(400)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Policy = "CanWriteClients")]
     public async Task<ActionResult> Post(CreateClientCommand command)
     {
         await _mediator.Send(command);
@@ -51,9 +55,10 @@ public class ClientController : ApiController
     [ProducesResponseType(400)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesDefaultResponseType]
+    [Authorize(Policy = "CanWriteClients")]
     public async Task<ActionResult> Put(UpdateClientCommand command)
     {
-        await _mediator.Send((command));
+        await _mediator.Send(command);
         return Ok();
     }
 
@@ -61,6 +66,7 @@ public class ClientController : ApiController
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesDefaultResponseType]
+    [Authorize(Policy = "CanWriteClients")]
     public async Task<ActionResult> Delete(DeleteClientCommand command)
     {
         await _mediator.Send(command);
