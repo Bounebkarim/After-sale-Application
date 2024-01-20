@@ -36,19 +36,19 @@ To run the .NET microservice locally, follow these steps:
 1. Clone the repository: git clone https://github.com/Bounebkarim/After-sale-Application.git
 2. Navigate to the project directory: cd After-sale-Application
 3. Build the solution: dotnet build
-3. Run the microservice: dotnet run
+4. Run the microservice: dotnet run
 Ensure you have the necessary .NET SDK installed for building and running the microservice.
-4. run rabbitmq docker image
+5. run rabbitmq docker image
 
 ```bash
   docker run -d -p 15672:15672 -p 5672:5672 rabbitmq:3-management
 ```
-5. run mongodb docker image
+6. run mongodb docker image
 
 ```bash
   docker run -d -p 27017:27017 mongo:latest
 ```
-6. run Consul docker image
+7. run Consul docker image
 
 ```bash
   docker run -d -p 8500:8500 consul:1.15.4
