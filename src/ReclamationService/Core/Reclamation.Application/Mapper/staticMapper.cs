@@ -15,7 +15,6 @@ public static class staticMapper
         var config = new MapperConfiguration((cfg) =>
         {
             cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
-            cfg.AddGlobalIgnore("Id");
             cfg.AddMaps(Assembly.GetExecutingAssembly());
         });
         var mapper = config.CreateMapper();

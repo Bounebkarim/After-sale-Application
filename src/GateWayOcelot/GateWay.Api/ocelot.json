@@ -14,7 +14,7 @@
     {
       "DownstreamPathTemplate": "/api/v{version}/Reclamation/{id}",
       "DownstreamScheme": "https",
-      "ServiceName": "Reclamation.Service",
+      "ServiceName": "ReclamationService",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       },
@@ -25,44 +25,88 @@
     {
       "DownstreamPathTemplate": "/api/v{version}/Client",
       "DownstreamScheme": "https",
-      "ServiceName": "Client.Service",
+      "ServiceName": "ClientService",
       "UpstreamPathTemplate": "/api/v{version}/Client",
       "UpstreamHttpMethod": [ "Get", "Post" ]
     },
     {
       "DownstreamPathTemplate": "/api/v{version}/Client/{id}",
       "DownstreamScheme": "https",
-      "ServiceName": "Client.Service",
+      "ServiceName": "ClientService",
       "UpstreamPathTemplate": "/api/v{version}/Client/{id}",
       "UpstreamHttpMethod": [ "Get", "Put", "Delete" ]
     },
     {
       "DownstreamPathTemplate": "/api/v{version}/Intervention",
       "DownstreamScheme": "https",
-      "ServiceName": "Intervention.Service",
+      "ServiceName": "InterventionService",
       "UpstreamPathTemplate": "/api/v{version}/Intervention",
       "UpstreamHttpMethod": [ "Get", "Post" ]
     },
     {
       "DownstreamPathTemplate": "/api/v{version}/Intervention/{id}",
       "DownstreamScheme": "https",
-      "ServiceName": "Intervention.Service",
+      "ServiceName": "InterventionService",
       "UpstreamPathTemplate": "/api/v{version}/Intervention/{id}",
       "UpstreamHttpMethod": [ "Get", "Put", "Delete" ]
     },
     {
       "DownstreamPathTemplate": "/configuration",
       "DownstreamScheme": "https",
-      "ServiceName": "GateWay.Service",
+      "ServiceName": "GateWayService",
       "UpstreamPathTemplate": "/configuration",
       "UpstreamHttpMethod": [ "Get", "Post" ]
     },
     {
       "DownstreamPathTemplate": "/outputcache/{region}",
       "DownstreamScheme": "https",
-      "ServiceName": "GateWay.Service",
+      "ServiceName": "GateWayService",
       "UpstreamPathTemplate": "/outputcache/{region}",
       "UpstreamHttpMethod": [ "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Auth/Login",
+      "DownstreamScheme": "https",
+      "ServiceName": "AuthService",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "UseServiceDiscovery": true,
+      "UpstreamPathTemplate": "/api/Auth/Login",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Auth/RefreshToken",
+      "DownstreamScheme": "https",
+      "ServiceName": "AuthService", 
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "UseServiceDiscovery": true,
+      "UpstreamPathTemplate": "/api/Auth/RefreshToken", 
+      "UpstreamHttpMethod": [ "Post" ] 
+    },
+    {
+      "DownstreamPathTemplate": "/api/Auth/SignOut",
+      "DownstreamScheme": "https",
+      "ServiceName": "AuthService",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "UseServiceDiscovery": true,
+      "UpstreamPathTemplate": "/api/Auth/SignOut", 
+      "UpstreamHttpMethod": [ "Post" ] 
+    },
+    {
+      "DownstreamPathTemplate": "/api/Auth/CreateUser",
+      "DownstreamScheme": "https",
+      "ServiceName": "AuthService", 
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "UseServiceDiscovery": true,
+      "UpstreamPathTemplate": "/api/Auth/CreateUser",
+      "UpstreamHttpMethod": [ "Post" ] 
     }
   ],
   "GlobalConfiguration": {

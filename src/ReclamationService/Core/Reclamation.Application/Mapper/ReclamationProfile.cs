@@ -15,8 +15,8 @@ public class ReclamationProfile : Profile
                                 .ConstructUsing((src, context) => new Domain.Reclamation(Guid.NewGuid()));
         CreateMap<UpdateReclamationCommand, Domain.Reclamation>()
                                 .ConstructUsing((src, context) => new Domain.Reclamation(src.Id));
-        CreateMap<Domain.Reclamation, ReclamationDto>();
-        CreateMap<Domain.Reclamation, ReclamationDetailsDto>();
+        CreateMap<Domain.Reclamation, ReclamationDto>().ReverseMap();
+        CreateMap<Domain.Reclamation, ReclamationDetailsDto>().ReverseMap();
         CreateMap<Pagination<Domain.Reclamation>, Pagination<ReclamationDto>>().ReverseMap();
     }
 }

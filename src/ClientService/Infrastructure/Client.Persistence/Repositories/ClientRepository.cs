@@ -23,7 +23,7 @@ public class ClientRepository : GenericRepository<Domain.Client>, IClientReposit
 
     public async Task<bool> CinExist(string cin, CancellationToken cancellationToken)
     {
-        return !await _dbContext.Clients.AnyAsync(o => o.Cin == cin, cancellationToken);
+        return await _dbContext.Clients.AnyAsync(o => o.Cin == cin, cancellationToken);
     }
 
     public async Task<bool> ClientCinExist(Guid clientId, string cin, CancellationToken cancellationToken)

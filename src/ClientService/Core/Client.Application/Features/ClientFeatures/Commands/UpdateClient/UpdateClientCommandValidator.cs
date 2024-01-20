@@ -43,7 +43,8 @@ public class UpdateClientCommandValidator : AbstractValidator<UpdateClientComman
 
     private async Task<bool> BeUnique(UpdateClientCommand command, CancellationToken cancellationToken)
     {
-        return await _clientRepository.ClientCinExist(command.Id, command.Cin, cancellationToken);
+        var a = !await _clientRepository.ClientCinExist(command.Id, command.Cin, cancellationToken);
+        return a;
     }
 
     private bool BeAValidIdNumber(string cin)
