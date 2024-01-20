@@ -14,12 +14,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using MongoDB.Bson;
-using MongoDB.Driver;
 using Auth.Infrastructure.Repositories.MongoDB.Initialisation;
+using Consul;
+using Contracts.ServiceDiscovery;
+
 
 var builder = WebApplication.CreateBuilder(args);
+const string SERVICE_NAME = "Auth.Service";
 // Register services
 var jwtSettingsConfiguration = builder.Configuration.GetSection("JwtSettings");
 builder.Services.Configure<JwtSettings>(jwtSettingsConfiguration);
@@ -33,13 +34,14 @@ builder.Services.AddSingleton(provider =>
     rsa.ImportRSAPrivateKey(Convert.FromBase64String(jwtSettings.AccessTokenSettings.PrivateKey), out var _);
     return new RsaSecurityKey(rsa);
 });
-
+builder.Services.AddHealthChecks();
 
 // Register repositories
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDBSettings"));
 MongoDbInit.InitializeMongoDB(builder.Configuration);
 builder.Services.AddSingleton<IAuthRepository, AuthRepository>();
-
+//Concul registration
+builder.Services.AddConsul(builder.Configuration.GetServiceConfig(builder.Environment));
 // Register use cases
 builder.Services.AddSingleton<LoginUseCase>();
 builder.Services.AddSingleton<RefreshTokenUseCase>();
@@ -54,7 +56,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -69,5 +70,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapHealthChecks("healthcheck");
 app.Run();

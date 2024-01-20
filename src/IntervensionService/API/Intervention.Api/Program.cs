@@ -8,10 +8,11 @@ using Intervention.Persistence.MigrationManager;
 using Serilog;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Contracts.ServiceDiscovery;
 using Intervention.Api.MiddleWare;
 
 var builder = WebApplication.CreateBuilder(args);
-
+const string SERVICE_NAME = "Intervention.Service";
 // Add services to the container.
 
 builder.Services.AddControllers().AddJsonOptions(config =>
@@ -19,7 +20,9 @@ builder.Services.AddControllers().AddJsonOptions(config =>
     config.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     config.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     config.JsonSerializerOptions.AllowTrailingCommas = true;
-}); ;
+});
+builder.Services.AddHealthChecks();
+builder.Services.AddConsul(builder.Configuration.GetServiceConfig(builder.Environment));
 
 builder.Host.UseSerilog((context, loggerConfig) =>
 {
@@ -32,6 +35,7 @@ builder.Services.AddCors(options =>
         .AllowAnyHeader()
         .AllowAnyMethod());
 });
+
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
@@ -55,7 +59,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build().MigrateDatabase();
 app.UseMiddleware<ExceptionMiddleware>();
-app.UseSerilogRequestLogging(); 
+app.UseSerilogRequestLogging();
 app.UseCors("all");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -69,5 +73,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapHealthChecks("healthcheck");
 app.Run();

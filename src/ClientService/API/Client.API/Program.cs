@@ -10,6 +10,7 @@ using Client.Application.Services;
 using Client.Infrastructure;
 using Client.Persistence;
 using Client.Persistence.MigrationManager;
+using Contracts.ServiceDiscovery;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
@@ -18,13 +19,17 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-
+const string SERVICE_NAME = "Client.Service";
 // Add services to the container.
 builder.Host.UseSerilog((context, loggerConfig) =>
 {
     loggerConfig.WriteTo.Console()
         .ReadFrom.Configuration(context.Configuration);
 });
+
+builder.Services.AddHealthChecks();
+
+builder.Services.AddConsul(builder.Configuration.GetServiceConfig(builder.Environment));
 builder.Services.AddControllers().AddJsonOptions(config =>
 {
     config.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -78,7 +83,7 @@ builder.Services.AddSwaggerGen(
                         {
                             Type = ReferenceType.SecurityScheme,
                             Id = "token"
-                        },
+                        }
                     },
                     Array.Empty<string>()
                 }
@@ -111,7 +116,6 @@ builder.Services.AddAuthentication(options =>
     })
     .AddJwtBearer(options =>
     {
-        
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -160,5 +164,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapHealthChecks("/healthcheck");
 app.Run();

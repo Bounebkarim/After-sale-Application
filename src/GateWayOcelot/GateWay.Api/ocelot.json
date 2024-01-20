@@ -1,0 +1,75 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v{version}/Reclamation",
+      "DownstreamScheme": "http",
+      "ServiceName": "Reclamation.Service",
+      "UpstreamPathTemplate": "/api/v{version}/Reclamation",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/Reclamation/{id}",
+      "DownstreamScheme": "http",
+      "ServiceName": "Reclamation.Service",
+      "UpstreamPathTemplate": "/api/v{version}/Reclamation/{id}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/Client",
+      "DownstreamScheme": "http",
+      "ServiceName": "Client.Service",
+      "UpstreamPathTemplate": "/api/v{version}/Client",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/Client/{id}",
+      "DownstreamScheme": "http",
+      "ServiceName": "Client.Service",
+      "UpstreamPathTemplate": "/api/v{version}/Client/{id}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/Intervention",
+      "DownstreamScheme": "http",
+      "ServiceName": "Intervention.Service",
+      "UpstreamPathTemplate": "/api/v{version}/Intervention",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v{version}/Intervention/{id}",
+      "DownstreamScheme": "http",
+      "ServiceName": "Intervention.Service",
+      "UpstreamPathTemplate": "/api/v{version}/Intervention/{id}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/configuration",
+      "DownstreamScheme": "http",
+      "ServiceName": "GateWay.Service",
+      "UpstreamPathTemplate": "/configuration",
+      "UpstreamHttpMethod": [ "Get", "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/outputcache/{region}",
+      "DownstreamScheme": "http",
+      "ServiceName": "GateWay.Service",
+      "UpstreamPathTemplate": "/outputcache/{region}",
+      "UpstreamHttpMethod": [ "Delete" ]
+    }
+  ],
+  "GlobalConfiguration": {
+    
+    "ServiceDiscoveryProvider": {
+      "Host": "http://localhost",
+      "Port": 8500,
+      "Type": "Consul"
+    }
+  },
+  "ReRoutes": [
+    {
+      "DownstreamPathTemplate": "/{url}",
+      "UpstreamPathTemplate": "/{url}",
+      "UpstreamHttpMethod": [ "Get" ]
+    }
+  ]
+}

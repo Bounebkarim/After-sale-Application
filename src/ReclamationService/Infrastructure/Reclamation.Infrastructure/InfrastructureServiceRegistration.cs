@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using Consul;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Reclamation.Application.Contracts.Logging;
@@ -8,7 +9,8 @@ namespace Reclamation.Infrastructure;
 
 public static class InfrastructureServiceRegistration
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
         services.AddMassTransit(busConfigurator =>
@@ -22,13 +24,15 @@ public static class InfrastructureServiceRegistration
                 {
                     h.Username(configuration["MessageBroker:UserName"]);
                     h.Password(configuration["MessageBroker:Password"]);
-                    
                 });
 
                 configurator.ConfigureEndpoints(context);
             });
         });
-
+        services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(consulConfig =>
+        {
+            consulConfig.Address = new Uri("http://localhost:8500");
+        }));
         return services;
     }
 }
