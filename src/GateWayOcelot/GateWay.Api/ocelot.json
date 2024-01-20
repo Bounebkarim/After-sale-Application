@@ -1,16 +1,24 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/v{version}/Reclamation",
-      "DownstreamScheme": "http",
-      "ServiceName": "Reclamation.Service",
-      "UpstreamPathTemplate": "/api/v{version}/Reclamation",
+      "DownstreamPathTemplate": "/api/v1/Reclamation",
+      "DownstreamScheme": "https",
+      "ServiceName": "ReclamationService",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "UseServiceDiscovery": true,
+      "UpstreamPathTemplate": "/api/v1/Reclamation",
       "UpstreamHttpMethod": [ "Get", "Post" ]
     },
     {
       "DownstreamPathTemplate": "/api/v{version}/Reclamation/{id}",
       "DownstreamScheme": "http",
       "ServiceName": "Reclamation.Service",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "UseServiceDiscovery": true,
       "UpstreamPathTemplate": "/api/v{version}/Reclamation/{id}",
       "UpstreamHttpMethod": [ "Get", "Put", "Delete" ]
     },
@@ -58,18 +66,11 @@
     }
   ],
   "GlobalConfiguration": {
-    
     "ServiceDiscoveryProvider": {
-      "Host": "http://localhost",
+      "Host": "localhost",
       "Port": 8500,
-      "Type": "Consul"
+      "Type": "PollConsul",
+      "PollingInterval": 100
     }
-  },
-  "ReRoutes": [
-    {
-      "DownstreamPathTemplate": "/{url}",
-      "UpstreamPathTemplate": "/{url}",
-      "UpstreamHttpMethod": [ "Get" ]
-    }
-  ]
+  }
 }

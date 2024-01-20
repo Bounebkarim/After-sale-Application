@@ -22,7 +22,7 @@ public class ReclamationController : ApiController
     }
 
     [HttpGet]
-    public async Task<Pagination<ReclamationDto>> Get([FromQuery] SpecParams specParams)
+    public async Task<Pagination<ReclamationDto>> Get([FromHeader] SpecParams specParams)
     {
         var data = await _mediator.Send(new GetReclamationsQuery(specParams));
         string? route = Request.Path.Value;

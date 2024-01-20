@@ -23,7 +23,7 @@ public class InterventionController : ApiController
     }
 
     [HttpGet]
-    public async Task<Pagination<InterventionDto>> Get([FromQuery] SpecParams specParams)
+    public async Task<Pagination<InterventionDto>> Get([FromHeader] SpecParams specParams)
     {
         var data = await _mediator.Send(new GetInterventionsQuery(specParams));
         string? route = Request.Path.Value;
