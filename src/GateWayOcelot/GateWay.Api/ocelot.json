@@ -13,7 +13,7 @@
     },
     {
       "DownstreamPathTemplate": "/api/v{version}/Reclamation/{id}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "ServiceName": "Reclamation.Service",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
@@ -24,42 +24,42 @@
     },
     {
       "DownstreamPathTemplate": "/api/v{version}/Client",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "ServiceName": "Client.Service",
       "UpstreamPathTemplate": "/api/v{version}/Client",
       "UpstreamHttpMethod": [ "Get", "Post" ]
     },
     {
       "DownstreamPathTemplate": "/api/v{version}/Client/{id}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "ServiceName": "Client.Service",
       "UpstreamPathTemplate": "/api/v{version}/Client/{id}",
       "UpstreamHttpMethod": [ "Get", "Put", "Delete" ]
     },
     {
       "DownstreamPathTemplate": "/api/v{version}/Intervention",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "ServiceName": "Intervention.Service",
       "UpstreamPathTemplate": "/api/v{version}/Intervention",
       "UpstreamHttpMethod": [ "Get", "Post" ]
     },
     {
       "DownstreamPathTemplate": "/api/v{version}/Intervention/{id}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "ServiceName": "Intervention.Service",
       "UpstreamPathTemplate": "/api/v{version}/Intervention/{id}",
       "UpstreamHttpMethod": [ "Get", "Put", "Delete" ]
     },
     {
       "DownstreamPathTemplate": "/configuration",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "ServiceName": "GateWay.Service",
       "UpstreamPathTemplate": "/configuration",
       "UpstreamHttpMethod": [ "Get", "Post" ]
     },
     {
       "DownstreamPathTemplate": "/outputcache/{region}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "ServiceName": "GateWay.Service",
       "UpstreamPathTemplate": "/outputcache/{region}",
       "UpstreamHttpMethod": [ "Delete" ]
