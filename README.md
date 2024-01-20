@@ -1,9 +1,9 @@
 # MiniProjet
-##Overview
+## Overview
 
 This repository houses a microservice project that follows the principles of Clean Architecture. Clean Architecture, as advocated by Robert C. Martin, emphasizes separation of concerns and maintainability by organizing code into distinct layers, each with a well-defined responsibility.
 
-##Project Structure
+## Project Structure
 
 
 - Core: Defines the core business logic and entities without dependencies on external frameworks. This layer encapsulates the essential business rules of the microservice.
@@ -12,7 +12,7 @@ This repository houses a microservice project that follows the principles of Cle
 
 - Infrastructure: Contains the external frameworks, tools, and drivers necessary for the microservice. This includes database implementations, third-party libraries, and other infrastructure-related code.
 
-##Lessons Learned
+## Lessons Learned
 
 1. Maintainability
 The Clean Architecture structure has greatly enhanced maintainability. Changes in external tools or frameworks primarily impact the Infrastructure layer, leaving the core business logic in the Core layer stable and adaptable.
@@ -29,7 +29,7 @@ Clean Architecture provides flexibility in choosing and swapping out external de
 5. Team Collaboration
 Clean Architecture facilitates collaboration among team members. With clear boundaries between layers, developers can work on different components simultaneously, reducing conflicts and streamlining development.
 
-##Getting Started
+## Getting Started
 
 To run the .NET microservice locally, follow these steps:
 
