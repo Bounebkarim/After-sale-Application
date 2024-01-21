@@ -24,7 +24,7 @@ public class ClientController : ApiController
 
     [HttpGet]
     [Authorize(Policy = "CanReadClients")]
-    public async Task<Pagination<ClientDto>> Get([FromHeader] SpecParams specParams)
+    public async Task<Pagination<ClientDto>> Get([FromQuery] SpecParams specParams)
     {
         var data = await _mediator.Send(new GetClientQuery(specParams));
         var route = Request.Path.Value;

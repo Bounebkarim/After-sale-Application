@@ -9,7 +9,14 @@
       },
       "UseServiceDiscovery": true,
       "UpstreamPathTemplate": "/api/v1/Reclamation",
-      "UpstreamHttpMethod": [ "Get", "Post" ]
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AddQueriesToRequest": {
+        "pageIndex": "{queryParam.pageIndex}",
+        "pageSize": "{queryParam.pageSize}",
+        "sortBy": "{queryParam.sortBy}",
+        "sortOrder": "{queryParam.sortOrder}",
+        "search": "{queryParam.search}"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/v{version}/Reclamation/{id}",
@@ -27,7 +34,14 @@
       "DownstreamScheme": "https",
       "ServiceName": "ClientService",
       "UpstreamPathTemplate": "/api/v{version}/Client",
-      "UpstreamHttpMethod": [ "Get", "Post" ]
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AddQueriesToRequest": {
+        "pageIndex": "{queryParam.pageIndex}",
+        "pageSize": "{queryParam.pageSize}",
+        "sortBy": "{queryParam.sortBy}",
+        "sortOrder": "{queryParam.sortOrder}",
+        "search": "{queryParam.search}"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/v{version}/Client/{id}",
@@ -41,7 +55,14 @@
       "DownstreamScheme": "https",
       "ServiceName": "InterventionService",
       "UpstreamPathTemplate": "/api/v{version}/Intervention",
-      "UpstreamHttpMethod": [ "Get", "Post" ]
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "AddQueriesToRequest": {
+        "pageIndex": "{queryParam.pageIndex}",
+        "pageSize": "{queryParam.pageSize}",
+        "sortBy": "{queryParam.sortBy}",
+        "sortOrder": "{queryParam.sortOrder}",
+        "search": "{queryParam.search}"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/v{version}/Intervention/{id}",
